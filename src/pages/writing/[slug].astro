@@ -1,0 +1,48 @@
+---
+import { getCollection, render } from 'astro:content';
+import OsPage from '../../layouts/OsPage.astro';
+import { formatDate, firstSentence, stripHtml } from '../../lib/os/format';
+
+export async function getStaticPaths() {
+  const writing = await getCollection('writing');
+  return writing.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { data } = entry;
+const { Content } = await render(entry);
+
+const description = firstSentence(stripHtml(entry.rendered?.html ?? ''));
+const dateIso = data.created.toISOString().slice(0, 10);
+const base = import.meta.env.BASE_URL.replace(/\/+$/, '');
+
+const jsonLd = {
+  '@type': 'BlogPosting',
+  headline: data.title,
+  datePublished: dateIso,
+  description,
+  url: Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined,
+  author: {
+    '@type': 'Person',
+    name: 'Vamsi Krishna Kollipara',
+    url: Astro.site ? new URL(import.meta.env.BASE_URL, Astro.site).href : undefined,
+  },
+};
+---
+
+<OsPage
+  initialPath={`/writing/${entry.id}`}
+  title={`${data.title} — Vamsi Krishna Kollipara`}
+  description={description}
+  jsonLd={jsonLd}
+>
+  <article>
+    <p><a href={`${base}/writing`}>← writing</a></p>
+    <h1>{data.title}</h1>
+    <p><time datetime={dateIso}>{formatDate(dateIso)}</time></p>
+    <Content />
+  </article>
+</OsPage>

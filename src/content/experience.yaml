@@ -1,0 +1,35 @@
+# Roles, newest first. Leaving `end` out means the role is still running, which
+# is what draws a bar to today's line in the Calendar app.
+# `calendar` groups roles the way named calendars group events in Calendar.
+- id: ai-data-management
+  org: "AI Data Management"
+  role: "Forward-Deployed Engineer"
+  calendar: work
+  start: 2025-07-01
+  highlights:
+    - "Built the Python orchestration layer running a 120-question clinical audit protocol across 6 question-type handlers with JSON-schema-validated LLM output; tripled throughput from 10 to 30+ audits/day while holding 94% agreement against a physician-reviewed gold standard"
+    - "Implemented HIPAA technical safeguards at the application layer: access control, audit logging, and encryption in transit and at rest"
+    - "Designed delegated, scope-limited authorization: Azure AD SSO, centralized RBAC across 8 roles, database-enforced Row-Level Security, and JWT claims propagated into Postgres sessions"
+    - "Operated the LLM pipeline in production: concurrency within Anthropic API rate limits, prompt caching on shared protocol prefixes, and human-in-the-loop review queues keeping every model decision traceable"
+    - "Built idempotent ELT on GCP (Google Batch, Terraform-provisioned): EHR extracts upserted on encounter IDs, so retries and partial failures never duplicate records"
+- id: indiana-state
+  org: "Indiana State University"
+  role: "Graduate Assistant, Software Engineering"
+  calendar: work
+  start: 2023-08-01
+  end: 2025-05-31
+  highlights:
+    - "Built a RAG knowledge assistant over an 8,000-document corpus in Pinecone; tuned embedding models and chunk overlap to improve recall@k"
+    - "Fine-tuned LoRA adapters and self-hosted open-source models with vLLM to satisfy campus data-privacy rules prohibiting external API calls"
+    - "Co-authored WebWeaver (published on PyPI), an async Python crawling library (asyncio/aiohttp) with robots.txt compliance, deduplication, and BFS/recursive modes; used it to ingest 40,000+ university URLs"
+- id: cognizant
+  org: "Cognizant (Client: Duke Energy)"
+  role: "Programmer Analyst, Full-Stack"
+  calendar: work
+  start: 2022-01-01
+  end: 2023-07-31
+  highlights:
+    - "Built REST services serving metering and billing data to a customer platform with 10,000+ daily active users"
+    - "Cut p95 latency from 2.5s to under 1s on multi-million-row smart-meter (AMI) tables via composite indexing and query optimization"
+    - "Added Redis read-through caching (15-minute TTL) on read-heavy metering endpoints to absorb peak traffic"
+    - "Implemented Kafka consumers for outage and billing notification workflows with idempotent handling, so retries never double-notify customers"

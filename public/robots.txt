@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vamsi876.github.io/sitemap-index.xml

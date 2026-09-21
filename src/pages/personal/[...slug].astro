@@ -1,0 +1,41 @@
+---
+// Redirect stubs for the old project-site URLs (vamsi876.github.io/personal/…)
+// after the move to the domain root. One noindex meta-refresh page per old
+// route, each pointing canonical at its new home so search engines transfer.
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const [writing, projects, art] = await Promise.all([
+    getCollection('writing'),
+    getCollection('projects'),
+    getCollection('art'),
+  ]);
+  const slugs = [
+    undefined,
+    'writing',
+    'projects',
+    'art',
+    'life',
+    ...writing.map((e) => `writing/${e.id}`),
+    ...projects.map((e) => `projects/${e.id}`),
+    ...art.map((e) => `art/${e.id}`),
+  ];
+  return slugs.map((slug) => ({ params: { slug } }));
+}
+
+const { slug } = Astro.params;
+const target = new URL(slug ? `/${slug}/` : '/', Astro.site).href;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting…</title>
+    <meta http-equiv="refresh" content={`0;url=${target}`} />
+    <link rel="canonical" href={target} />
+    <meta name="robots" content="noindex" />
+  </head>
+  <body>
+    <p>This page moved to <a href={target}>{target}</a>.</p>
+  </body>
+</html>

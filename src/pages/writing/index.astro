@@ -1,0 +1,31 @@
+---
+import { getCollection } from 'astro:content';
+import OsPage from '../../layouts/OsPage.astro';
+import { formatDate } from '../../lib/os/format';
+
+const writing = (await getCollection('writing')).sort(
+  (a, b) => b.data.created.getTime() - a.data.created.getTime()
+);
+const base = import.meta.env.BASE_URL.replace(/\/+$/, '');
+---
+
+<OsPage
+  initialPath="/writing"
+  title="Writing — Vamsi Krishna Kollipara"
+  description="Notes and essays by Vamsi Krishna Kollipara."
+>
+  <h1>Writing</h1>
+  <p><a href={`${base}/`}>← vamsi's mac</a></p>
+  {writing.length === 0 && <p>No notes yet — check back later.</p>}
+  <ul>
+    {writing.map((w) => {
+      const iso = w.data.created.toISOString().slice(0, 10);
+      return (
+        <li>
+          <a href={`${base}/writing/${w.id}`}>{w.data.title}</a> —{' '}
+          <time datetime={iso}>{formatDate(iso)}</time>
+        </li>
+      );
+    })}
+  </ul>
+</OsPage>

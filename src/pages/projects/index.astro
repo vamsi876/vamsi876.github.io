@@ -1,0 +1,25 @@
+---
+import { getCollection } from 'astro:content';
+import OsPage from '../../layouts/OsPage.astro';
+
+const projects = (await getCollection('projects')).sort(
+  (a, b) => b.data.created.getTime() - a.data.created.getTime()
+);
+const base = import.meta.env.BASE_URL.replace(/\/+$/, '');
+---
+
+<OsPage
+  initialPath="/projects"
+  title="Projects — Vamsi Krishna Kollipara"
+  description="Things Vamsi Krishna Kollipara has built — web apps, tools, and experiments."
+>
+  <h1>Projects</h1>
+  <p><a href={`${base}/`}>← vamsi's mac</a></p>
+  <ul>
+    {projects.map((p) => (
+      <li>
+        <a href={`${base}/projects/${p.id}`}>{p.data.title}</a> — {p.data.oneLiner}
+      </li>
+    ))}
+  </ul>
+</OsPage>

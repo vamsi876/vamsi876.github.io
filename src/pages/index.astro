@@ -1,0 +1,62 @@
+---
+import OsPage from '../layouts/OsPage.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/+$/, '');
+
+const homeUrl = Astro.site
+  ? new URL(Astro.url.pathname, Astro.site).href
+  : undefined;
+// WebSite schema tells Google the site's name (otherwise it guesses from the
+// domain); Person is the rich-result identity card.
+const jsonLd = {
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      name: 'Vamsi Krishna Kollipara',
+      url: homeUrl,
+    },
+    {
+      '@type': 'Person',
+      name: 'Vamsi Krishna Kollipara',
+      url: homeUrl,
+      email: 'mailto:kolliparavamsikrishna80@gmail.com',
+      affiliation: {
+        '@type': 'Organization',
+        name: 'AI Data Management',
+      },
+      sameAs: [
+        'https://github.com/vamsi876',
+        'https://linkedin.com/in/vamsikollipara',
+      ],
+    },
+  ],
+};
+---
+
+<OsPage
+  initialPath={null}
+  title="Vamsi Krishna Kollipara"
+  description="Vamsi Krishna Kollipara — projects, experience, and writing. A fake little Mac as a personal website."
+  jsonLd={jsonLd}
+>
+  <h1>Vamsi Krishna Kollipara</h1>
+  <p>
+    Hi, I'm Vamsi — a forward-deployed engineer at AI Data Management, where
+    I'm the founding engineer on a HIPAA-aligned clinical audit platform. My
+    background is in distributed data systems: event-driven services on Kafka,
+    fault-tolerant batch orchestration, and low-latency access over
+    multi-million-row datasets. M.S. computer science, Indiana State
+    University (2025).
+  </p>
+  <p>This site is a fake little Mac.</p>
+  <ul>
+    <li><a href={`${base}/experience`}>/experience</a> — where I've worked</li>
+    <li><a href={`${base}/projects`}>/projects</a> — things I've built</li>
+    <li><a href={`${base}/writing`}>/writing</a> — notes and essays</li>
+  </ul>
+  <ul>
+    <li><a href="mailto:kolliparavamsikrishna80@gmail.com">kolliparavamsikrishna80@gmail.com</a></li>
+    <li><a href="https://github.com/vamsi876">github.com/vamsi876</a></li>
+    <li><a href="https://linkedin.com/in/vamsikollipara">linkedin.com/in/vamsikollipara</a></li>
+  </ul>
+</OsPage>

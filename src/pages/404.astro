@@ -1,0 +1,16 @@
+---
+import OsPage from '../layouts/OsPage.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/+$/, '');
+---
+
+<OsPage
+  initialPath={null}
+  title="404 — Vamsi Krishna Kollipara"
+  description="File not found on vamsi's mac."
+  notFound={true}
+>
+  <h1>404 — file not found</h1>
+  <p>The file you're looking for was moved, deleted, or never existed.</p>
+  <p><a href={`${base}/`}>← back to vamsi's mac</a></p>
+</OsPage>

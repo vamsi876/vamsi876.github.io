@@ -1,0 +1,66 @@
+---
+import { getCollection, render } from 'astro:content';
+import { getImage, Image } from 'astro:assets';
+import OsPage from '../../layouts/OsPage.astro';
+import { formatDate } from '../../lib/os/format';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { data } = entry;
+const { Content } = await render(entry);
+
+const thumb = await getImage({ src: data.thumb, width: 1200, format: 'webp' });
+const ogImage = thumb.src;
+
+const base = import.meta.env.BASE_URL.replace(/\/+$/, '');
+
+const meta: [string, string][] = [
+  ['Stack', data.stack.join(', ')],
+  ['Status', data.status],
+  ['Created', formatDate(data.created.toISOString().slice(0, 10))],
+];
+---
+
+<OsPage
+  initialPath={`/projects/${entry.id}`}
+  title={`${data.title} — Vamsi Krishna Kollipara`}
+  description={data.oneLiner}
+  ogImage={ogImage}
+>
+  <article>
+    <p><a href={`${base}/projects`}>← projects</a></p>
+    <h1>{data.title}</h1>
+    <p><em>{data.oneLiner}</em></p>
+    <dl>
+      {meta.map(([label, value]) => (
+        <>
+          <dt>{label}</dt>
+          <dd>{value}</dd>
+        </>
+      ))}
+      {data.repo && (
+        <>
+          <dt>Repo</dt>
+          <dd><a href={data.repo}>{data.repo}</a></dd>
+        </>
+      )}
+      {data.demo && (
+        <>
+          <dt>Demo</dt>
+          <dd><a href={data.demo}>{data.demo}</a></dd>
+        </>
+      )}
+    </dl>
+    <Content />
+    {data.images.map((img, i) => (
+      <Image src={img} alt={`${data.title} screenshot ${i + 1}`} width={1200} />
+    ))}
+  </article>
+</OsPage>
