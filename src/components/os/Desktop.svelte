@@ -747,6 +747,12 @@
       iconUrl: dockIcons.github,
       action: () => window.open('https://github.com/vamsi876', '_blank', 'noopener'),
     },
+    {
+      id: 'linkedin',
+      label: 'LinkedIn',
+      iconUrl: dockIcons.linkedin,
+      action: () => window.open('https://www.linkedin.com/in/vamsikollipara/', '_blank', 'noopener'),
+    },
   ]);
 
   const dockTrailing = $derived([
