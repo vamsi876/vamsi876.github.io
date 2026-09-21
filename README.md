@@ -40,9 +40,9 @@ and `import.meta.env.BASE_URL` in pages), so a `base` can be reintroduced if
 the site ever moves back under a subpath. The old project-site URLs under
 `/personal/` are served as redirect stubs (`src/pages/personal/[...slug].astro`).
 
-Deploys run from `.github/workflows/deploy.yml` on every push to `main`.
-One-time setup: in GitHub repo **Settings → Pages**, set source to
-**GitHub Actions**.
+Deploys are static: run `npm run build`, then push the contents of
+`dist/` to the `gh-pages` branch (Pages is set to deploy from that branch).
+The `main` branch keeps the source.
 
 ### Moving to a custom domain later
 
