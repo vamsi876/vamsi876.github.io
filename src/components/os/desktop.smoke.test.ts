@@ -204,31 +204,31 @@ function albumFolder(album: string, items: typeof photoItems): FSNode {
 // Roles for the Calendar app: the folder carries them all, each event its id.
 const roles: ExperienceItem[] = [
   {
-    id: 'contour',
-    org: 'Contour',
-    role: 'Software engineering intern',
+    id: 'ai-data-management',
+    org: 'AI Data Management',
+    role: 'Forward-Deployed Engineer',
     calendar: 'work',
     start: '2026-06-01',
-    highlights: ['Shipped the Linear sync.'],
+    highlights: ['Built the audit orchestration.'],
   },
   {
-    id: 'oracle',
-    org: 'Oracle',
-    role: 'Product manager, contract',
+    id: 'cognizant',
+    org: 'Cognizant',
+    role: 'Programmer Analyst',
     calendar: 'work',
     start: '2025-12-01',
     end: '2026-04-30',
-    highlights: ['Advised on agent adoption.'],
+    highlights: ['Built metering REST services.'],
   },
   // Years back, so it only shows up once the timeline is paged there.
   {
-    id: 'varsity-swim',
-    org: 'Varsity Swim',
-    role: 'Captain',
+    id: 'indiana-state',
+    org: 'Indiana State University',
+    role: 'Graduate Assistant',
     calendar: 'athletics',
     start: '2024-12-01',
     end: '2025-03-31',
-    highlights: ['Two school records.'],
+    highlights: ['Built a RAG assistant.'],
   },
 ];
 
@@ -495,7 +495,7 @@ test('a deep-linked role opens Calendar on it, with the timeline around it', asy
     target,
     props: {
       tree: lifeTree,
-      initialPath: '/experience/oracle',
+      initialPath: '/experience/cognizant',
       showResume: false,
     },
   });
@@ -504,10 +504,10 @@ test('a deep-linked role opens Calendar on it, with the timeline around it', asy
   const calendar = target.querySelector('[role="dialog"][aria-label="Calendar"]');
   expect(calendar).not.toBeNull();
   // The role that was asked for, read out in full.
-  expect(calendar!.textContent).toContain('Product manager, contract');
-  expect(calendar!.textContent).toContain('Advised on agent adoption.');
+  expect(calendar!.textContent).toContain('Programmer Analyst');
+  expect(calendar!.textContent).toContain('Built metering REST services.');
   // Both roles sit on the timeline, whichever one is selected.
-  expect(calendar!.textContent).toContain('Contour');
+  expect(calendar!.textContent).toContain('AI Data Management');
   // Dec 2025 through today, so the months run from the earliest start.
   expect(calendar!.textContent).toContain('Dec 2025 – Apr 2026');
 
@@ -535,15 +535,15 @@ test('the Calendar dock icon opens the timeline, and clicking a role selects it'
   const calendar = target.querySelector('[role="dialog"][aria-label="Calendar"]');
   expect(calendar).not.toBeNull();
   // Opens on the most recent role.
-  expect(calendar!.textContent).toContain('Shipped the Linear sync.');
+  expect(calendar!.textContent).toContain('Built the audit orchestration.');
 
   const oracle = calendar!.querySelector<HTMLButtonElement>(
-    'button[aria-label^="Oracle"]'
+    'button[aria-label^="Cognizant"]'
   );
   expect(oracle).not.toBeNull();
   oracle!.click();
   await new Promise((r) => setTimeout(r, 30));
-  expect(calendar!.textContent).toContain('Advised on agent adoption.');
+  expect(calendar!.textContent).toContain('Built metering REST services.');
 
   unmount(app);
   target.remove();
@@ -559,7 +559,7 @@ test('the timeline pages back to older roles and returns to today', async () => 
   await new Promise((r) => setTimeout(r, 50));
 
   const calendar = target.querySelector('[role="dialog"][aria-label="Calendar"]')!;
-  const swim = () => calendar.querySelector('button[aria-label^="Varsity Swim"]');
+  const swim = () => calendar.querySelector('button[aria-label^="Indiana State University"]');
   const back = calendar.querySelector<HTMLButtonElement>(
     'button[aria-label="Earlier months"]'
   )!;
@@ -593,15 +593,15 @@ test('a deep-linked role from years back brings the timeline to it', async () =>
     target,
     props: {
       tree: lifeTree,
-      initialPath: '/experience/varsity-swim',
+      initialPath: '/experience/indiana-state',
       showResume: false,
     },
   });
   await new Promise((r) => setTimeout(r, 50));
 
   const calendar = target.querySelector('[role="dialog"][aria-label="Calendar"]')!;
-  expect(calendar.textContent).toContain('Two school records.');
-  expect(calendar.querySelector('button[aria-label^="Varsity Swim"]')).not.toBeNull();
+  expect(calendar.textContent).toContain('Built a RAG assistant.');
+  expect(calendar.querySelector('button[aria-label^="Indiana State University"]')).not.toBeNull();
 
   unmount(app);
   target.remove();
